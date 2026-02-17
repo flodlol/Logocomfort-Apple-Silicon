@@ -26,8 +26,8 @@ I don't own LOGO! Soft Comfort and I'm not affiliated with Siemens. This repo do
 set -euo pipefail
 
 # CHANGE THIS ONCE (after you put this repo on GitHub)
-REPO="YOUR_GITHUB_USER/YOUR_REPO"
-if [[ "$REPO" == "YOUR_GITHUB_USER/YOUR_REPO" ]]; then
+REPO="flodlol/Logocomfort-Apple-Silicon"
+if [[ "$REPO" == "flodlol/Logocomfort-Apple-Silicon" ]]; then
   echo "Edit REPO=\"...\" first (your GitHub repo), then re-run."
   exit 1
 fi
