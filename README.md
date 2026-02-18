@@ -1,4 +1,4 @@
-# LOGO! Soft Comfort for M-series Macs
+# LOGO! Soft Comfort for M‑series Macs
 
 This makes the Intel macOS version run on Apple silicon (Rosetta + Intel Java), so it doesn't instantly close.
 
@@ -20,38 +20,74 @@ I don't own LOGO! Soft Comfort and I'm not affiliated with Siemens. This repo do
 
 ![Correct Folder](docs/screenshots/screenshot-1.png)
 
-4) After it's installed, paste this into Terminal:
+Important:
+- Don’t move only `LOGOComfort.app` somewhere else: it must stay next to `lib/` + `bin/` (JavaFX/serial native libs live there).
+
+## Patch (step-by-step)
+
+### Step 1 — Install Rosetta (Apple‑silicon only)
+
+If you have an M‑series Mac, run this once (it’s safe to run again).
+If you’re on an Intel Mac, skip this step.
 
 ```bash
-set -euo pipefail
-
-# CHANGE THIS ONCE (after you put this repo on GitHub)
-REPO="flodlol/Logocomfort-Apple-Silicon"
-if [[ "$REPO" == "flodlol/Logocomfort-Apple-Silicon" ]]; then
-  echo "Edit REPO=\"...\" first (your GitHub repo), then re-run."
-  exit 1
-fi
-
-TMPDIR="$(mktemp -d)"
-ZIP_URL_MAIN="https://github.com/$REPO/archive/refs/heads/main.zip"
-ZIP_URL_MASTER="https://github.com/$REPO/archive/refs/heads/master.zip"
-
-if ! curl -fsSL "$ZIP_URL_MAIN" -o "$TMPDIR/repo.zip"; then
-  curl -fsSL "$ZIP_URL_MASTER" -o "$TMPDIR/repo.zip"
-fi
-ditto -xk "$TMPDIR/repo.zip" "$TMPDIR"
-
-REPO_DIR="$(/usr/bin/find "$TMPDIR" -maxdepth 1 -type d -name '*-main' -print -quit || true)"
-if [[ -z "${REPO_DIR:-}" ]]; then
-  REPO_DIR="$(/usr/bin/find "$TMPDIR" -maxdepth 1 -type d -name '*-master' -print -quit || true)"
-fi
-if [[ -z "${REPO_DIR:-}" ]]; then
-  echo "Couldn't find the extracted repo folder in: $TMPDIR"
-  exit 1
-fi
-bash "$REPO_DIR/scripts/quickfix.sh"
+sudo softwareupdate --install-rosetta --agree-to-license
 ```
 
-Notes:
-- The script finds `LOGOComfort.app` automatically (it does NOT have to be in `/Applications`).
-- If it says Java is missing, install **Intel (x64/x86_64) Java 11+** from the Zulu link above.
+### Step 2 — Install Intel (x86_64) Java 11+
+
+You need **Intel (x86_64) Java 11+** on Apple‑silicon (ARM Java won’t work for this app).
+
+After installing Java, this should list at least one `x86_64` Java:
+
+```bash
+/usr/libexec/java_home -V --arch x86_64
+```
+
+### Step 3 — Download this repo
+
+Option A (with git):
+
+```bash
+cd ~/Downloads
+git clone https://github.com/flodlol/Logocomfort-Apple-Silicon.git
+cd Logocomfort-Apple-Silicon
+```
+
+Option B (no git):
+
+```bash
+cd ~/Downloads
+curl -fL "https://github.com/flodlol/Logocomfort-Apple-Silicon/archive/refs/heads/main.zip" -o Logocomfort-Apple-Silicon.zip
+ditto -xk Logocomfort-Apple-Silicon.zip .
+cd Logocomfort-Apple-Silicon-main
+```
+
+### Step 4 — Run the quick fix
+
+This patches the launcher and then opens LOGOComfort.
+If it asks for your password, that’s `sudo` (needed when the app is installed somewhere protected).
+
+```bash
+bash scripts/quickfix.sh
+```
+
+If it can’t find your app automatically, pass the app path (tip: drag `LOGOComfort.app` into Terminal to insert the path):
+
+```bash
+bash scripts/quickfix.sh "/path/to/LOGOComfort.app"
+```
+
+### Step 5 — If it still fails
+
+Check the log:
+
+```bash
+tail -n 200 /tmp/LOGOComfort-launch.log
+```
+
+Or run the doctor script (same “drag the app into Terminal” trick works here too):
+
+```bash
+bash scripts/doctor.sh "/path/to/LOGOComfort.app"
+```
