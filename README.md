@@ -20,8 +20,7 @@ I don't own LOGO! Soft Comfort and I'm not affiliated with Siemens. This repo do
 
 ![Correct Folder](docs/screenshots/screenshot-1.png)
 
-Important:
-- Don’t move only `LOGOComfort.app` somewhere else: it must stay next to `lib/` + `bin/` (JavaFX/serial native libs live there).
+Important: Don’t move only `LOGOComfort.app` somewhere else: it must stay next to `lib/` + `bin/` (JavaFX/serial native libs live there).
 
 ## Patch (step-by-step)
 
