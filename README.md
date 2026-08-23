@@ -90,3 +90,12 @@ Or run the doctor script (same “drag the app into Terminal” trick works here
 ```bash
 bash scripts/doctor.sh "/path/to/LOGOComfort.app"
 ```
+
+---
+
+<div align="center">
+  If you find this useful, a star on GitHub would be nice. ⭐ <br/>
+  Thanks for checking it out! ❤️
+  <br/>
+  <a href="https://github.com/sponsors/flodlol">Sponsor this project</a>
+</div>
